@@ -1,0 +1,37 @@
+package com.educandoweb.couse.resources;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.educandoweb.couse.entities.Category;
+import com.educandoweb.couse.services.CategoryService;
+
+@RestController
+@RequestMapping(value = "/categories")
+public class CategoryResource {
+	
+	private final CategoryService service;
+
+	CategoryResource(CategoryService service) {
+		this.service = service;
+	}
+	
+		@GetMapping
+		public ResponseEntity<List<Category>> findAll(){
+			List<Category> List = service.findaAll();
+			return ResponseEntity.ok().body(List);	
+			}
+		@GetMapping(value = "/{id}")
+		public ResponseEntity<Category> findById(@PathVariable Long id){
+			Category obj = service.findById(id);
+		return ResponseEntity.ok().body(obj);
+		}
+		
+		
+
+}
