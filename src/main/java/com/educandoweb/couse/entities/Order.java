@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.educandoweb.couse.enums.OrderStatus;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import tools.jackson.databind.jsonFormatVisitors.JsonValueFormat;
 
 @Entity
 @Table(name = "tb_order")
@@ -24,6 +24,8 @@ public class Order implements Serializable {
 	private Long orderId;
 	private Instant moment;
 
+	private Integer orderStatus;
+
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private User client;
@@ -31,15 +33,10 @@ public class Order implements Serializable {
 	public Order() {
 	}
 
-	public Order(Long orderId, Instant moment) {
+	public Order(Long orderId, Instant moment, User client, OrderStatus orderStatus) {
 		this.orderId = orderId;
 		this.moment = moment;
-
-	}
-
-	public Order(Long orderId, Instant moment, User client) {
-		this.orderId = orderId;
-		this.moment = moment;
+		setOrderStatus(orderStatus);
 		this.client = client;
 	}
 
@@ -58,12 +55,31 @@ public class Order implements Serializable {
 	public void setMoment(Instant moment) {
 		this.moment = moment;
 	}
+	
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(orderStatus);
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		if (orderStatus != null) {
+		this.orderStatus = orderStatus.getCode();
+		}
+	}
+
+	public User getClient() {
+		return client;
+	}
+
+	public void setClient(User client) {
+		this.client = client;
+	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(orderId);
 	}
 
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
