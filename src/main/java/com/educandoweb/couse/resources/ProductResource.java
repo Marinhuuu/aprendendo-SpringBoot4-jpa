@@ -1,0 +1,37 @@
+package com.educandoweb.couse.resources;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.educandoweb.couse.entities.Product;
+import com.educandoweb.couse.services.ProductService;
+
+@RestController
+@RequestMapping(value = "/products")
+public class ProductResource {
+	
+	private final ProductService service;
+
+	ProductResource(ProductService service) {
+		this.service = service;
+	}
+	
+		@GetMapping
+		public ResponseEntity<List<Product>> findAll(){
+			List<Product> List = service.findaAll();
+			return ResponseEntity.ok().body(List);	
+			}
+		@GetMapping(value = "/{id}")
+		public ResponseEntity<Product> findById(@PathVariable Long id){
+			Product obj = service.findById(id);
+		return ResponseEntity.ok().body(obj);
+		}
+		
+		
+
+}
